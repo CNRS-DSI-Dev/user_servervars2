@@ -20,11 +20,13 @@
  *
  */
 
-class PrependGroupNammingServiceTest extends \PHPUnit_Framework_TestCase {
+class PrependGroupNammingServiceTest extends \Test\TestCase {
 
 	var $service;
 
 	public function setUp() {
+		parent::setUp();
+
 		$this->service = new \OCA\User_Servervars2\Service\Impl\PrependGroupNamingService(
 			new  \OCA\User_Servervars2\Lib\CustomConfig(
 				array(

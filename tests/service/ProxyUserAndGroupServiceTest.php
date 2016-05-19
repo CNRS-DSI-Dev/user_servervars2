@@ -1,6 +1,6 @@
 <?php
 /**
- * ownCloud - 
+ * ownCloud -
  *
  * @author Marc DeXeT
  * @copyright 2014 DSI CNRS https://www.dsi.cnrs.fr
@@ -21,19 +21,21 @@
  */
 namespace OCA\User_Servervars2\Service;
 
-class ProxyUserAndGroupServiceTest extends \PHPUnit_Framework_TestCase {
+class ProxyUserAndGroupServiceTest extends \Test\TestCase {
 
 	var $service;
-	var $userManager; 
-	var $groupManager; 
-	var $groupNamingService; 
-	var $backend; 
+	var $userManager;
+	var $groupManager;
+	var $groupNamingService;
+	var $backend;
 	var $config;
-	var $tokens; 
+	var $tokens;
 	var $user;
 
 
-	protected function setUp(){ 
+	protected function setUp(){
+
+		parent::setUp();
 
 		$this->userManager = 	$this->getMockBuilder('\OC\User\Manager')
 									->disableOriginalConstructor()
@@ -46,10 +48,19 @@ class ProxyUserAndGroupServiceTest extends \PHPUnit_Framework_TestCase {
 
 
 		$this->groupNamingService = new \OCA\User_Servervars2\Service\Impl\PrependGroupNamingService(
-			new  \OCA\User_Servervars2\Lib\CustomConfig( 
-				array( 
-					'separator' => '@', 
-					'mapping' => array('ou'=> 'grp', 'o' => 'org')
+			new  \OCA\User_Servervars2\Lib\CustomConfig(
+				array(
+					'separator' => '@',
+					'mapping' => array(
+						'ou'=> array(
+							'kind' => 'grp',
+							'defaultValue' => 'defVal',
+						),
+						'o' => array(
+							'kind' => 'org',
+							'defaultValue' => 'defVal2',
+						),
+					),
 				)
 			)
 		);
@@ -57,7 +68,7 @@ class ProxyUserAndGroupServiceTest extends \PHPUnit_Framework_TestCase {
 
 		$this->backend = $this->getMockBuilder('OCA\User_Servervars2\Backend\UserBackend')
 								->disableOriginalConstructor()
-								->getMock();							
+								->getMock();
 
 		$this->config = new LocalUserConfig();
 
@@ -78,7 +89,7 @@ class ProxyUserAndGroupServiceTest extends \PHPUnit_Framework_TestCase {
 
 	public function testNewRandomPassword() {
 		$a = array();
-		for ($i=0; $i < 10 ; $i++) { 
+		for ($i=0; $i < 10 ; $i++) {
 			$a[] = $this->service->newRandomPassword();
 		}
 
@@ -93,7 +104,7 @@ class ProxyUserAndGroupServiceTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCreateUser() {
 
-		$this->userManager->expects( $this->once() )->method('delete')->with('jdoo');
+		// $this->userManager->expects( $this->once() )->method('delete')->with('jdoo'); // does not exists in OC9
 		$this->userManager->expects( $this->once() )->method('userExists')->with('jdoo')->willReturn(false);
 		$this->userManager->expects( $this->once() )->method('createUser')->with( 'jdoo', $this->logicalNot( $this->isNull()))->willReturn( $this->user );
 
@@ -104,7 +115,7 @@ class ProxyUserAndGroupServiceTest extends \PHPUnit_Framework_TestCase {
 
 
 	public function testProvisionUser() {
-		$this->userManager->expects( $this->once() )->method('delete')->with('jdoo');
+		// $this->userManager->expects( $this->once() )->method('delete')->with('jdoo'); // does not exists in OC9
 		$this->userManager->expects( $this->once() )->method('userExists')->with('jdoo')->willReturn(false);
 		$this->userManager->expects( $this->once() )->method('createUser')->with( 'jdoo', $this->logicalNot( $this->isNull()))->willReturn( $this->user );
 		$this->userManager->expects( $this->once() )->method('get')->with( 'jdoo')->willReturn( $this->user );
@@ -153,14 +164,14 @@ class ProxyUserAndGroupServiceTest extends \PHPUnit_Framework_TestCase {
 
 		$grpNowhere = $this->getMockBuilder('OC\Group\Group')
 								->disableOriginalConstructor()
-								->getMock();								
+								->getMock();
 
 		$map = array('grp@tokyo' => $grpTokyo, 'org@former_group' => $grpFormer, 'org@nowhere' => $grpNowhere);
-		$this->groupManager->expects( $this->once() )->method('get')->will($this->returnValueMap($map));		
+		$this->groupManager->expects( $this->once() )->method('get')->will($this->returnValueMap($map));
 
 		$grpTokyo->expects( $this->once() )->method('addUser')->with( $this->user );
-		$grpFormer->expects( $this->once() )->method('removeUser')->with( $this->user );						
-		
+		$grpFormer->expects( $this->once() )->method('removeUser')->with( $this->user );
+
 
 		//THEN
 		$this->service->provisionUser('jdoo', $this->tokens);
@@ -176,7 +187,7 @@ class ProxyUserAndGroupServiceTest extends \PHPUnit_Framework_TestCase {
 								->getMock();
 
 		// group doesn't exist
-		$this->groupManager->expects( $this->at(0) )->method('get')->with('grp@tokyo')->willReturn( null );								
+		$this->groupManager->expects( $this->at(0) )->method('get')->with('grp@tokyo')->willReturn( null );
 		// group is created
 		$this->groupManager->expects( $this->at(1) )->method('createGroup')->with('grp@tokyo')->willReturn( $grpTokyo );
 
@@ -197,7 +208,7 @@ class ProxyUserAndGroupServiceTest extends \PHPUnit_Framework_TestCase {
 								->getMock();
 
 		// group doesn't exist
-		$this->groupManager->expects( $this->once() )->method('get')->with('grp@tokyo')->willReturn( $grpTokyo );								
+		$this->groupManager->expects( $this->once() )->method('get')->with('grp@tokyo')->willReturn( $grpTokyo );
 		// group is created
 		$this->groupManager->expects( $this->never() )->method('createGroup')->with('grp@tokyo')->willReturn( $grpTokyo );
 
@@ -212,10 +223,10 @@ class ProxyUserAndGroupServiceTest extends \PHPUnit_Framework_TestCase {
 	/**
 	*
 	*/
-	public function testGetGroupNames() {		
+	public function testGetGroupNames() {
 		$grpArray = array(
-			'ou' => array('tokyo','kyoto'), 
-			'o' => array('japan'), 
+			'ou' => array('tokyo','kyoto'),
+			'o' => array('japan'),
 			'foo' => array('bar')
 			);
 		$names = $this->service->getGroupNames($grpArray, $this->groupNamingService);
@@ -229,7 +240,7 @@ class ProxyUserAndGroupServiceTest extends \PHPUnit_Framework_TestCase {
 		$grpArray = array('grp@tokyo', 'grp@kyoto', 'org@japan', 'foo_bar', 'something', 'admin');
 		$names = $this->service->getOldGroupNames($grpArray, $this->groupNamingService);
 		$this->assertEquals( array('grp@tokyo', 'grp@kyoto', 'org@japan'), $names);
-	}	
+	}
 
 
 	public function testgetGroupNamesToAdd() {
@@ -250,7 +261,7 @@ class ProxyUserAndGroupServiceTest extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue(in_array('toRemove1', $result), print_r($result, 1) );
 		$this->assertTrue(in_array('toRemove2', $result) );
 		$this->assertEquals(2, count($result) );
-	}	
+	}
 
 
 }
@@ -278,9 +289,9 @@ class LocalUserConfig {
  		if ( ! isset($this->data[$uid][$appName]) ) {
  			$this->data[$uid][$appName] = array();
  			$this->receveidData[$uid][$appName] = array();
- 		} 		
-	
+ 		}
+
 		$this->data[$uid][$appName][$key] = $value;
 		$this->receveidData[$uid][$appName][$key] = $value;
- 	} 	
+ 	}
  }

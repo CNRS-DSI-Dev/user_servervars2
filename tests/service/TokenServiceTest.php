@@ -24,8 +24,8 @@
  use OCA\User_Servervars2\Backend\MetadataProvider;
 
 
- class TokenServiceTest extends \PHPUnit_Framework_TestCase {
- 	
+ class TokenServiceTest extends \Test\TestCase {
+
  	var $service;
  	var $tokens;
  	var $metadataProvider;
@@ -36,8 +36,10 @@
  	*
  	*/
  	protected function setUp(){
- 		
- 		$this->tokens = $this->getMock('OCA\User_Servervars2\Service\Tokens');
+
+ 		parent::setUp();
+
+		$this->tokens = $this->getMock('OCA\User_Servervars2\Service\Tokens');
  		$this->metadataProvider = $this->getMock('OCA\User_Servervars2\Backend\MetadataProvider');
  		$this->metadata = $this->getMock('OCA\User_Servervars2\Backend\Metadata');
  		$this->scopeValidator = $this->getMock('OCA\User_Servervars2\Backend\scopeValidator');
@@ -47,7 +49,7 @@
 
  	public function testCheckTokensEmpty() {
 	 	//__WHEN__
-	 	$uid = ''; 
+	 	$uid = '';
 	 	$provider = 'myidp.org';
  		$this->setUpContext($uid, null, null);
 
@@ -66,7 +68,7 @@
 	 			->method('valid')
 	 			->willReturn( true );
 	 	//__WHEN__
-	 	$uid = 'jean.gabin@myidp.org'; 
+	 	$uid = 'jean.gabin@myidp.org';
 	 	$provider = 'myidp.org';
  		$this->setUpContext($uid, $provider, $this->scopeValidator);
 
@@ -83,7 +85,7 @@
 	 			->method('valid')
 	 			->willReturn( false );
 	 	//__WHEN__
-	 	$uid = 'jean.gabin@foo.myidp.org'; 
+	 	$uid = 'jean.gabin@foo.myidp.org';
 	 	$provider = 'myidp.org';
  		$this->setUpContext($uid, $provider, $this->scopeValidator);
 
@@ -94,7 +96,7 @@
 
  	public function testCheckTokensNoProvider() {
 	 	//__WHEN__
-	 	$uid = 'jean.gabin@myidp.org'; 
+	 	$uid = 'jean.gabin@myidp.org';
 	 	$provider = '';
  		$this->setUpContext($uid, $provider, $this->scopeValidator);
 
@@ -108,7 +110,7 @@
  	 * undocumented function
  	 *
  	 * @return void
- 	 * @author 
+ 	 * @author
  	 **/
  	function setUpContext($uid, $provider, $validator) {
  				// : isUserMatchingProviderCallBack
@@ -118,13 +120,13 @@
 
  		$this->metadata->expects($this->any())
 	 			->method('getUserIdAttributeName')
-	 			->will( $this->returnValue('eppn'));	
+	 			->will( $this->returnValue('eppn'));
 
-	 	$this->metadataProvider->expects( $this->any()) 		
-	 		->method('getMetaData')	
+	 	$this->metadataProvider->expects( $this->any())
+	 		->method('getMetaData')
 	 		->with($provider)
 	 		->willReturn( $this->metadata);
-	 	// 
+	 	//
 	 	$this->tokens->expects($this->any())
 	 			->method('getUserId')
 	 			->willReturn( $uid );

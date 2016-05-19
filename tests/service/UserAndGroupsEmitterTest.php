@@ -1,6 +1,6 @@
 <?php
 /**
- * ownCloud - 
+ * ownCloud -
  *
  * @author Marc DeXeT
  * @copyright 2014 DSI CNRS https://www.dsi.cnrs.fr
@@ -22,14 +22,16 @@
 
 namespace OCA\User_ServerVars2\Service;
 
-class UserAndGroupsEmitterTest extends \PHPUnit_Framework_TestCase {
+class UserAndGroupsEmitterTest extends \Test\TestCase {
 
 	var $emitter;
 	var $listener;
 
 	protected function setUp(){
- 	
- 		// $this->tokens = $this->getMock('OCA\User_Servervars2\Service\Tokens');
+
+ 		parent::setUp();
+
+		// $this->tokens = $this->getMock('OCA\User_Servervars2\Service\Tokens');
  		// $this->metadataProvider = $this->getMock('OCA\User_Servervars2\Backend\MetadataProvider');
  		// $this->metadata = $this->getMock('OCA\User_Servervars2\Backend\Metadata');
  		// $this->scopeValidator = $this->getMock('OCA\User_Servervars2\Backend\scopeValidator');

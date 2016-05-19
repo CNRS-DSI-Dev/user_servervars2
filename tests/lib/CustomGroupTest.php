@@ -1,6 +1,6 @@
 <?php
 /**
- * ownCloud - 
+ * ownCloud -
  *
  * @author Marc DeXeT
  * @copyright 2014 DSI CNRS https://www.dsi.cnrs.fr
@@ -22,11 +22,13 @@
 namespace OCA\User_Servervars2\Lib;
 // use OCA\User_Servervars2\Lib\CustomConfig;
 
-class CustomConfigTest extends \PHPUnit_Framework_TestCase {
+class CustomConfigTest extends \Test\TestCase {
 
 	var $conf;
 
 	public function setUp() {
+		parent::setUp();
+
 		$this->conf = new CustomConfig();
 	}
 
@@ -51,6 +53,6 @@ class CustomConfigTest extends \PHPUnit_Framework_TestCase {
 		//__then__
 		$this->assertEquals('new', $this->conf->data['list']['sublist']['0']);
 		$this->assertEquals('new', $this->conf->getValue('list.sublist.0'), print_r($this->conf->getValue('list.sublist.0'), true));
-		$this->assertEquals('new', $this->conf->data['list']['map']['key0']);		
+		$this->assertEquals('new', $this->conf->data['list']['map']['key0']);
 	}
 }

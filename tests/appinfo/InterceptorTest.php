@@ -1,6 +1,6 @@
 <?php
 /**
- * ownCloud - 
+ * ownCloud -
  *
  * @author Marc DeXeT
  * @copyright 2014 DSI CNRS https://www.dsi.cnrs.fr
@@ -21,7 +21,7 @@
  */
 namespace OCA\User_Servervars2\AppInfo;
 
-class UserBackendTest extends \PHPUnit_Framework_TestCase {
+class UserBackendTest extends \Test\TestCase {
 
 	var $interceptor;
 	var $appConfig;
@@ -33,6 +33,8 @@ class UserBackendTest extends \PHPUnit_Framework_TestCase {
 
 		$this->appConfig = new LocalAppConfig();
 
+		parent::setUp();
+
 		$this->tokens = $this->getMockBuilder('OCA\User_Servervars2\Service\Tokens')
 								->disableOriginalConstructor()
 								->getMock();
@@ -43,7 +45,7 @@ class UserBackendTest extends \PHPUnit_Framework_TestCase {
 
 		$this->redirector =  $this->getMockBuilder('OCA\User_Servervars2\AppInfo\Redirector')
 								->disableOriginalConstructor()
-								->getMock();								
+								->getMock();
 
 		$this->interceptor = new Interceptor($this->appConfig, $this->tokens, $this->userAndGroupService, $this->redirector);
 		$this->interceptor->throwExceptionToExit = true;
@@ -88,12 +90,12 @@ class UserBackendTest extends \PHPUnit_Framework_TestCase {
 		$_GET['app']  = 'usv2';
 		$this->assertArrayHasKey('app', $_GET);
 		$this->appConfig->data = array('user_servervars2' => array('sso_url' =>'http://my.sso.url', 'stop_if_empty' => 'true') );
-		$this->tokens->expects( $this->once() )->method('getUserId')->willReturn('user@nowhere.com');		
+		$this->tokens->expects( $this->once() )->method('getUserId')->willReturn('user@nowhere.com');
 		$this->userAndGroupService ->expects( $this->once() )->method('isLoggedIn')->willReturn(false);
 
 		// Users's creation is requested and successful
 		$this->userAndGroupService ->expects( $this->once() )->method('login')->with($this->equalTo('user@nowhere.com'))->willReturn(true);
-		// Redirection to defaultpage is called 
+		// Redirection to defaultpage is called
 		$this->redirector->expects( $this->once() )->method('redirectToDefaultPage');
 		$this->interceptor->run();
 	}
@@ -109,10 +111,10 @@ class UserBackendTest extends \PHPUnit_Framework_TestCase {
 		// Users's creation is requested BUT fails
 		$this->userAndGroupService ->expects( $this->once() )->method('login')->with($this->equalTo('user@nowhere.com'))->willReturn(false);
 
-		// Redirection to defaultpage is NEVER called 
+		// Redirection to defaultpage is NEVER called
 		$this->redirector->expects( $this->never() )->method('redirectToDefaultPage');
 		$this->interceptor->run();
-	}	
+	}
 }
 
 

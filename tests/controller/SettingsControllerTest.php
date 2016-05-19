@@ -1,6 +1,6 @@
 <?php
 /**
- * ownCloud - 
+ * ownCloud -
  *
  * @author Marc DeXeT
  * @copyright 2014 DSI CNRS https://www.dsi.cnrs.fr
@@ -26,13 +26,15 @@ use OCA\User_servervars2\Lib\ConfigHelper;
 use OCP\AppFramework\Http;
 
 
-class SettingsControllerTest extends \PHPUnit_Framework_TestCase {
+class SettingsControllerTest extends \Test\TestCase {
 
 	var $controller;
 	var $request;
 	var $appConfig;
 
 	public function setUp() {
+		parent::setUp();
+
 		$this->request = $this->getMockBuilder('\OCP\IRequest')
 			->getMock();
 
@@ -80,7 +82,7 @@ class SettingsControllerTest extends \PHPUnit_Framework_TestCase {
 		} catch(\Exception $e) {
 			$this->assertEquals("JSON error 4. Content: {'a': 1}",$e->getMessage());
 		}
-	}	
+	}
 
 	// public function testProceedConfigURLOk() {
 	// 	$array = array();

@@ -1,6 +1,6 @@
 <?php
 /**
- * ownCloud - 
+ * ownCloud -
  *
  * @author Marc DeXeT
  * @copyright 2014 DSI CNRS https://www.dsi.cnrs.fr
@@ -25,23 +25,25 @@ use \OCP\User;
 use OCA\User_Servervars2\Hook\ServerVarsHooks;
 
 
-class ServerVarsHooksTest extends \PHPUnit_Framework_TestCase {
+class ServerVarsHooksTest extends \Test\TestCase {
 
 	var $hooks;
-	var $tokenService; 
+	var $tokenService;
 	var $tokens;
 	var $uag;
 	var $user;
 	var $appConfig;
 
 	public function setUp() {
+		parent::setUp();
+
 		$this->tokenService = $this->getMockBuilder('OCA\User_Servervars2\Service\TokenService')
 								->disableOriginalConstructor()
 								->getMock();
 
 		$this->tokens = $this->getMockBuilder('OCA\User_Servervars2\Service\Tokens')
 								->disableOriginalConstructor()
-								->getMock();								
+								->getMock();
 
 		$this->uag 	= $this->getMockBuilder('OCA\User_Servervars2\Service\UserAndGroupService')
 								->disableOriginalConstructor()
@@ -62,7 +64,7 @@ class ServerVarsHooksTest extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * Test in mock mode.
-	 * 
+	 *
 	 */
 	public function testOnPostLoginTokensOk() {
 		//__GIVEN__
@@ -71,7 +73,7 @@ class ServerVarsHooksTest extends \PHPUnit_Framework_TestCase {
 		//-------------------------------------------------------------------------------------------
 		$this->tokenService->expects( $this->once() )->method('checkTokens')->willReturn( 'uid@myidp.org' );
 		//-------------------------------------------------------------------------------------------
-		
+
 		$this->tokenService->expects( $this->once() )->method('getTokens')->willReturn( $this->tokens );
 		$this->uag->expects( $this->once() )->method('provisionUser')->with('uid@myidp.org', $this->tokens)->willReturn( false );
 
@@ -82,7 +84,7 @@ class ServerVarsHooksTest extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * Test in mock mode.
-	 * 
+	 *
 	 */
 	public function testOnPostLoginTokensNOTOk() {
 		//__GIVEN__
@@ -98,7 +100,7 @@ class ServerVarsHooksTest extends \PHPUnit_Framework_TestCase {
 		//__THEN__
 		$this->hooks->onPostLogin( $this->user, 'password');
 
-	}	
+	}
 
 }
 

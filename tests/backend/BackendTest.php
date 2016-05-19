@@ -1,6 +1,6 @@
 <?php
 /**
- * ownCloud - 
+ * ownCloud -
  *
  * @author Marc DeXeT
  * @copyright 2014 DSI CNRS https://www.dsi.cnrs.fr
@@ -24,14 +24,16 @@ namespace OCA\User_Servervars2\Backend;
 use OCA\User_Servervars2\Service\Context;
 use OCA\User_Servervars2\Backend\UserBackend;
 
-class UserBackendTest extends \PHPUnit_Framework_TestCase {
+class UserBackendTest extends \Test\TestCase {
 
 	var $backend;
 	var $tokenService;
 	var $appConfig;
 
 	public function setUp() {
-		
+
+		parent::setUp();
+
 		$this->tokenService = $this->getMockBuilder('OCA\User_Servervars2\Service\TokenService')
 								->disableOriginalConstructor()
 								->getMock();
@@ -86,7 +88,7 @@ class UserBackendTest extends \PHPUnit_Framework_TestCase {
 
 		//_THEN__
 		$this->assertFalse($returnedValue);
-	}	
+	}
 
 	public function testCheckPasswordNotSameUid() {
 		//__GIVEN__
@@ -98,7 +100,7 @@ class UserBackendTest extends \PHPUnit_Framework_TestCase {
 
 		//_THEN__
 		$this->assertFalse($returnedValue);
-	}	
+	}
 
 
 	public function testCheckPasswordCheckFailed() {
@@ -111,7 +113,7 @@ class UserBackendTest extends \PHPUnit_Framework_TestCase {
 
 		//_THEN__
 		$this->assertFalse($returnedValue);
-	}	
+	}
 
 }
 
