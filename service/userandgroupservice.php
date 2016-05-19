@@ -1,6 +1,6 @@
 <?php
 /**
- * ownCloud - 
+ * ownCloud -
  *
  * @author Marc DeXeT
  * @copyright 2014 DSI CNRS https://www.dsi.cnrs.fr
@@ -25,7 +25,7 @@ interface UserAndGroupService {
 
 	/**
 	* Quiet user provisionning.
-	* 
+	*
 	*/
 	public function provisionUser($uid, $tokens);
 
@@ -42,6 +42,8 @@ interface UserAndGroupService {
  	public function updateMail($uid, $mail);
 
  	public function updateGroup($uid, $justCreated);
+
+    public function checkUserPassword($uid);
 
  	public function login($uid);
 

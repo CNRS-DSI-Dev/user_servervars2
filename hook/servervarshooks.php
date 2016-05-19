@@ -1,6 +1,6 @@
 <?php
 /**
- * ownCloud - 
+ * ownCloud -
  *
  * @author Marc DeXeT
  * @copyright 2014 DSI CNRS https://www.dsi.cnrs.fr
@@ -54,7 +54,7 @@ class ServerVarsHooks {
 
 		if ( $uid === $this->tokenService->checkTokens() ) {
 			$justCreatedUser = $uag->provisionUser($uid, $this->tokenService->getTokens() );
-		} 
+		}
 	}
 
 
@@ -62,9 +62,9 @@ class ServerVarsHooks {
 
 	function register($userSession) {
 		$obj = $this;
-		$userSession->listen('\OC\User', 'postLogin', function($user, $password) use(&$obj) { 
-			return $obj->onPostLogin($user, $password); 
-		});
+		// $userSession->listen('\OC\User', 'postLogin', function($user, $password) use(&$obj) {
+		// 	return $obj->onPostLogin($user, $password);
+		// });
 
 		$userSession->listen('\OC\User', 'logout', function() use(&$obj) {
 			$sloUrl = $this->appConfig->getValue('user_servervars2','slo_url');

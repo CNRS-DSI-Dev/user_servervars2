@@ -48,7 +48,7 @@ class ProxyUserAndGroupService implements UserAndGroupService {
 	 * @return created user or false
 	 */
 	public function createUser($uid) {
-		$this->userManager->delete($uid);
+		// $this->userManager->delete($uid);
 		if (  ! $this->userManager->userExists($uid)) {
 			$randomPaswword = $this->newRandomPassword();
 			//return OC_User::createUser($uid, $randomPaswword);
@@ -219,8 +219,12 @@ class ProxyUserAndGroupService implements UserAndGroupService {
 		return OC_Group::groupExists($group);
 	}
 
-	public function login($uid) {
+	public function checkUserPassword($uid) {
 		$this->backend->startLoginCycle($uid);
+		return $this->backend->checkPassword($uid, '');
+	}
+
+	public function login($uid) {
 		$response = \OC_User::login($uid, '');
 		$this->backend->endLoginCycle($uid);
 		return $response;
@@ -228,7 +232,7 @@ class ProxyUserAndGroupService implements UserAndGroupService {
 
 
 	public function isLoggedIn() {
-		return \OC_User::isLoggedIn();
+		return \OCP\User::isLoggedIn();
 	}
 
 

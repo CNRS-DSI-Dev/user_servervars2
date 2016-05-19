@@ -1,6 +1,6 @@
 <?php
 /**
- * ownCloud - 
+ * ownCloud -
  *
  * @author Marc DeXeT
  * @copyright 2014 DSI CNRS https://www.dsi.cnrs.fr
@@ -21,6 +21,8 @@
  */
 namespace OCA\User_Servervars2\AppInfo;
 
+use \OCA\User_Servervars2\Service\Tokens;
+use \OCA\User_Servervars2\Service\UserAndGroupService;
 
 class Interceptor {
 
@@ -31,7 +33,7 @@ class Interceptor {
 	var $throwExceptionToExit = false;
 
 
-	function __construct($appConfig, $tokens, $userAndGroupService, $redirector=null) {
+	function __construct($appConfig, Tokens $tokens, UserAndGroupService $userAndGroupService, $redirector=null) {
 		$this->appConfig = $appConfig;
 		$this->tokens = $tokens;
 		$this->uag = $userAndGroupService;
@@ -45,7 +47,7 @@ class Interceptor {
 	*/
 	function checkGet($name, $value) {
 		return (isset($_GET[$name]) && $_GET[$name] == $value);
-	}	
+	}
 
 
 
@@ -65,18 +67,24 @@ class Interceptor {
 				$ssoURL = $this->appConfig->getValue('user_servervars2', 'sso_url', 'http://localhost/sso');
 				$this->redirector->redirectTo($ssoURL);
 
-			} else { 
+			} else {
 
 				$isLoggedIn = $this->uag->isLoggedIn();
 
 				if ( ! $isLoggedIn ) {
-					$isLoggedIn = $this->uag->login($uid); 
+
+					$userId = $this->uag->checkUserPassword($uid);
+					if ($userId !== false) {
+						$this->uag->provisionUser($uid, $this->tokens);
+					}
+
+					$isLoggedIn = $this->uag->login($uid);
 				}
 				if ( ! $isLoggedIn ) {
 					// if ( !$this->uag->isLoggedIn())  {
-					\OC_Log::write('servervars',
+					\OC\Log\Owncloud::write('servervars',
 						'Error trying to log-in the user' . $uid,
-						\OC_Log::DEBUG);
+						\OCP\Util::DEBUG);
 					return;
 				}
 
