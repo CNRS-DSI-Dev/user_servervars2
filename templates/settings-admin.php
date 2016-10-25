@@ -35,10 +35,10 @@
 			<li><a href="#usv2tabs-4"><?php p($l->t("GroupNaming"));?></a></li>
 		</ul>
 		<fieldset id="usv2tabs-1">
-			<div class="block"><label><?php p($l->t('Auto Create User'))?></label><input type="checkbox" name="auto_create_user" value="1" <?php if (empty($_['auto_create_user']) or $_['auto_create_user']!=='false') { p('checked="checked"'); }?> ></div>
-			<div class="block"><label><?php p($l->t('Update User Data'))?></label><input type="checkbox" name="update_user_data" value="1" <?php if(empty($_['update_user_data']) or $_['update_user_data']!=='false') { p('checked="checked"'); }?> ></div>
-			<div class="block"><label><?php p($l->t('Update User Groups'))?></label><input type="checkbox" name="update_groups" value="1" <?php if(empty($_['update_groups']) or $_['update_groups']!=='false') { p('checked="checked"'); }?> ></div>
-			<div class="block"><label><?php p($l->t('Stop If Empty'))?></label><input type="checkbox" name="stop_if_empty" value="1" <?php if(empty($_['stop_if_empty']) or $_['stop_if_empty']!=='false') { p('checked="checked"'); }?> ></div>
+			<div class="block"><label><?php p($l->t('Auto Create User'))?></label><input type="checkbox" name="auto_create_user" value="1" <?php if (isset($_['auto_create_user']) and $_['auto_create_user']!=='false') { print_unescaped('checked="checked"'); }?> ></div>
+			<div class="block"><label><?php p($l->t('Update User Data'))?></label><input type="checkbox" name="update_user_data" value="1" <?php if(isset($_['update_user_data']) and $_['update_user_data']!=='false') { print_unescaped('checked="checked"'); }?> ></div>
+			<div class="block"><label><?php p($l->t('Update User Groups'))?></label><input type="checkbox" name="update_groups" value="1" <?php if(isset($_['update_groups']) and $_['update_groups']!=='false') { print_unescaped('checked="checked"'); }?> ></div>
+			<div class="block"><label><?php p($l->t('Stop If Empty'))?></label><input type="checkbox" name="stop_if_empty" value="1" <?php if(isset($_['stop_if_empty']) and $_['stop_if_empty']!=='false') { print_unescaped('checked="checked"'); }?> ></div>
 		</fieldset>
 		<fieldset id="usv2tabs-2">
 			<div class="block"><label><?php p($l->t('Single Sign On Url'))?></label><input type="text" name="sso_url" value="<?php p($_['sso_url'])?>"></div>
