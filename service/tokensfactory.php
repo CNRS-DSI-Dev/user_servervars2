@@ -42,7 +42,10 @@ class TokensFactory {
  	public function getTokens() {
  		
  		$helper = new ConfigHelper();
- 		$config = $helper->newCustomConfig( $this->customConfig );
+		// PPA 25/10/2016
+		// Cf RemoteToken, this parameter is not used...
+ 		// $config = $helper->newCustomConfig( $this->customConfig );
+		$config = array();
 
  		return $helper->newInstanceOf(
  			$this->className,

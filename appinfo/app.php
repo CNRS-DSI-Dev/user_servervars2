@@ -43,7 +43,7 @@ $app->getUserManager()->registerBackend( $c->query('UserBackend'));
 //$app->getGroupManager()->addBackend( new \OC_Group_Database() );
 
 $c->query('ServerVarsHooks')->register( $app->getUserSession());
-$authStatus = $c->isLoggedIn();
+// $authStatus = $c->isLoggedIn();
 
 // - trigger authentication - 
 // http://localhost/core/index.php?XDEBUG_SESSION_START=sublime.xdebug&app=usv2&debug=1

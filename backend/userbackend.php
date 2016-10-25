@@ -66,7 +66,7 @@ class UserBackend extends \OC_User_Backend { //implements \OC_User_Interface {
 		$this->protectedGroups = false;
 		$this->proxiedBackend = $backend;
 		if ( is_null($this->proxiedBackend) ) {
-			$this->proxiedBackend = new \OC_User_Database();
+			$this->proxiedBackend = new \OC\User\Database();
 		}
 	}
 
