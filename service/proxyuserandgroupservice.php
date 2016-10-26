@@ -226,8 +226,8 @@ class ProxyUserAndGroupService implements UserAndGroupService {
 
 	public function login($uid) {
 		$userSession = \OC::$server->getUserSession();
-		$userSession->login($uid, '');
-		$userSession->createSessionToken(\OC::$server->getRequest(), $userSession->getUser()->getUID(), $uid, $password);
+		$response = $userSession->login($uid, '');
+		$userSession->createSessionToken(\OC::$server->getRequest(), $userSession->getUser()->getUID(), $uid, null);
 		$this->backend->endLoginCycle($uid);
 		return $response;
 	}
