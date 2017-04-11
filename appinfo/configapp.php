@@ -20,7 +20,7 @@
  *
  */
 namespace OCA\User_Servervars2\AppInfo;
- 
+
 use \OCP\AppFramework\App;
 use \OCA\User_Servervars2\Service\TokenService;
 use \OCA\User_Servervars2\Backend\UserBackend;
@@ -45,18 +45,18 @@ class ConfigApp extends App {
 		// Controller
 /*		$container->registerService('PageController', function ($c) {
 			return  new PageController();
-		});	*/	
+		});	*/
 
 		$container->registerService('TokensFactory', function($c) {
-			return new TokensFactory( 
+			return new TokensFactory(
 				$c->query('ServerContainer')->getAppConfig()
 				);
 		});
 
 		$container->registerService('Tokens', function ($c) {
 			return $c->query('TokensFactory')->getTokens();
-		});	
-		
+		});
+
 		// Service
 		$container->registerService('TokenService', function ($c) {
 			return  new TokenService(
@@ -66,10 +66,7 @@ class ConfigApp extends App {
 
 
 		$container->registerService('GroupManager', function($c) {
-			return \OC_Group::getManager();
-			// return new \OC\Group\Manager(
-			// 		$c->query('ServerContainer')->getUserManager()
-			// 	);
+			return \OC::$server->getGroupManager();
 		});
 
 		// Service
@@ -92,7 +89,7 @@ class ConfigApp extends App {
 		// Interceptor
 		$container->registerService('Interceptor', function ($c) {
 			return  new Interceptor(
-				$c->query('ServerContainer')->getAppConfig(),  
+				$c->query('ServerContainer')->getAppConfig(),
 				$c->query('Tokens'),
 				$c->query('UserAndGroupService')
 			);
@@ -109,7 +106,7 @@ class ConfigApp extends App {
 
 		// Backend
 		$container->registerService('UserBackend', function ($c) {
-			return  new UserBackend(		
+			return  new UserBackend(
 				$c->query('TokenService'),
 				$c->query('ServerContainer')->getAppConfig()
 			);
@@ -121,12 +118,12 @@ class ConfigApp extends App {
 			return new MetadataProvider(
 				$c->query('MetadataMapper')
 			);
-		});	
+		});
 
 		// Mappers
 		$container->registerService('MetadataMapper', function ($c) {
 			return  new MetadataMapper();
-		});		
+		});
 
 		// Mappers
 		$container->registerService('SettingsController', function ($c) {
@@ -134,7 +131,7 @@ class ConfigApp extends App {
 				$c->query('Request'),
 				$c->query('ServerContainer')->getAppConfig()
 			);
-		});		
+		});
 
 
 	}
@@ -147,7 +144,7 @@ class ConfigApp extends App {
 	public function getUserSession() {
 		return $this->getContainer()->getServer()->getUserSession();
 	}
-	
+
 	public function getUser() {
 		return $this->getContainer()->getServer()->getUserSession()->getUser();
 	}

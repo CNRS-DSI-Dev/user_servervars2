@@ -216,7 +216,7 @@ class ProxyUserAndGroupService implements UserAndGroupService {
 	}
 
 	public function groupExists($group) {
-		return OC_Group::groupExists($group);
+		return \OC::$server->getGroupManager()->groupExists($group);
 	}
 
 	public function checkUserPassword($uid) {
