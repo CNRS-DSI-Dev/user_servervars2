@@ -58,6 +58,14 @@ class Interceptor {
 		if( $this->checkGet('app','usv2') ) {
 
 			$uid = $this->tokens->getUserId();
+			$providerId = $this->tokens->getProviderId();
+			$userConfig = $this->uag->config;
+
+			if (strpos($providerId,'janus') || strpos($providerId, 'shibboleth')){
+					if($userConfig->getUserValue($uid, 'owncloud', 'isGuest', false) == 1){
+							$userConfig->setUserValue($uid,'owncloud','isGuest','0');
+					}
+			}
 
 			if ( $uid === false || $uid === null) {
 				if (  $this->appConfig->getValue('user_servervars2','stop_if_empty',false) ) {
